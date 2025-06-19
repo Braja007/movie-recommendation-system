@@ -2,6 +2,9 @@
 #import json
 import os
 import streamlit as st
+if not os.path.exists("src/df_cleaned.pkl"):
+    import subprocess
+    subprocess.run(["python", "src/generate_pickle.py"])
 from recommend import df, recommend_movies
 from omdb_utils import get_movie_details
 
