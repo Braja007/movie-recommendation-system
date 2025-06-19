@@ -14,8 +14,11 @@ logging.basicConfig(
 
 logging.info("🔁 Loading data...")
 try:
-    df = joblib.load("df_cleaned.pkl")
-    cosine_sim = joblib.load("cosine_sim.pkl")
+    import os
+
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    df = joblib.load(os.path.join(base_path, "df_cleaned.pkl"))
+    cosine_sim = joblib.load(os.path.join(base_path, "cosine_sim.pkl"))
 
     logging.info("✅ Data loaded successfully.")
 except Exception as e:
