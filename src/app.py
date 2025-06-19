@@ -9,15 +9,15 @@ from omdb_utils import get_movie_details
 OMDB_API_KEY = os.environ.get("OMDB_API_KEY")
 
 
-"""import os
+""" import os
 #If want to test locally
 base_path = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(base_path, "config_template.json")
-config = json.load(open(config_path))"""
+config = json.load(open(config_path))
 
 
-""""# OMDB api key
-OMDB_API_KEY = config["OMDB_API_KEY"]"""
+# OMDB api key
+OMDB_API_KEY = config["OMDB_API_KEY"] """
 
 st.set_page_config(
     page_title="Movie Recommender",
