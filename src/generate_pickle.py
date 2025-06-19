@@ -1,36 +1,26 @@
-import pandas as pd
-import logging
-from preprocess import preprocess_text
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import joblib
+def generate():
+    import pandas as pd
+    import logging
+    import joblib
+    from preprocess import preprocess_text
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
 
-logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO)
 
-logging.info("🚀 Starting preprocessing...")
+    df = pd.read_csv("src/movies.csv")
+    df['combined'] = df['overview']
+    df['cleaned_text'] = df['combined'].apply(preprocess_text)
 
-df = pd.read_csv("movies.csv")
+    tfidf = TfidfVectorizer(max_features=5000)
+    tfidf_matrix = tfidf.fit_transform(df['cleaned_text'])
 
-logging.info("✅ Dataset loaded successfully. Total rows: %d", len(df))
+    cosine_sim = cosine_similarity(tfidf_matrix)
 
-# 👇 ADD THIS LINE if you only have a single column like 'overview'
-df['combined'] = df['overview']  # or whichever column contains your movie descriptions
+    joblib.dump(df, "src/df_cleaned.pkl")
+    joblib.dump(cosine_sim, "src/cosine_sim.pkl")
 
-logging.info("🧹 Cleaning text...")
-df['cleaned_text'] = df['combined'].apply(preprocess_text)
-logging.info("✅ Text cleaned.")
+    logging.info("✅ Preprocessing done and files saved.")
 
-logging.info("🔠 Vectorizing using TF-IDF...")
-tfidf = TfidfVectorizer(max_features=5000)
-tfidf_matrix = tfidf.fit_transform(df['cleaned_text'])
-
-logging.info("✅ TF-IDF matrix shape: %s", tfidf_matrix.shape)
-
-logging.info("📐 Calculating cosine similarity...")
-cosine_sim = cosine_similarity(tfidf_matrix)
-
-joblib.dump(df, "df_cleaned.pkl")
-joblib.dump(cosine_sim, "cosine_sim.pkl")
-
-logging.info("💾 Data saved to disk.")
-logging.info("✅ Preprocessing complete.")
+if __name__ == "__main__":
+    generate()
