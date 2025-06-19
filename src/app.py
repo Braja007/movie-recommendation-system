@@ -12,9 +12,7 @@ if not Path("src/df_cleaned.pkl").exists():
 from recommend import df, recommend_movies
 from omdb_utils import get_movie_details
 
-# Load config
-config = json.load(open("config_template.json"))
-OMDB_API_KEY = config["OMDB_API_KEY"]
+OMDB_API_KEY = st.secrets["OMDB_API_KEY"]
 
 st.set_page_config(
     page_title="Movie Recommender",
