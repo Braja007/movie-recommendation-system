@@ -2,14 +2,17 @@ import os
 import json
 import streamlit as st
 from pathlib import Path
-from recommend import df, recommend_movies
-from omdb_utils import get_movie_details
 
-# Run preprocessing if pickle files don't exist
+# Check and run preprocessing first
 if not Path("src/df_cleaned.pkl").exists():
     import generate_pickle
     generate_pickle.generate()
 
+# Now import only after .pkl files exist
+from recommend import df, recommend_movies
+from omdb_utils import get_movie_details
+
+# Load config
 config = json.load(open("config_template.json"))
 OMDB_API_KEY = config["OMDB_API_KEY"]
 
